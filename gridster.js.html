@@ -17,8 +17,8 @@
     <div id="divInfo1" style="font-size: small; font-weight: normal; color: #9DA4FF;">Cursor info:</div>
 
     <div id="divGridster" class="gridster ready" style="background-color: #EFEFEF;">
-        <ul id="fantom" style="position: absolute; height: 100%; width: 100%; background-color: transparent; transition: transform 0.0s; transform: scale(1) translate(0px, 0px); "></ul>
-        <ul id="ulGridsterContent" style="height: 100%; width: 100%; background-color: transparent; transition: transform 0.6s cubic-bezier(0.2, 0.6, 0.3, 1.0); transform: scale(1) translate(0px, 0px); ">
+        <div id="fantom" style="position: absolute; height: 100%; width: 100%; background-color: transparent; transition: transform 0.0s; transform: scale(1) translate(0px, 0px); "></div>
+        <ul id="ulGridster" style="height: 100%; width: 100%; background-color: transparent; transition: transform 0.6s cubic-bezier(0.2, 0.6, 0.3, 1.0); transform: scale(1) translate(0px, 0px); ">
             <li data-row="1" data-col="1" data-sizex="2" data-sizey="2" class="gs-w">0<span class="gs-resize-handle gs-resize-handle-both"></span></li>
             <li data-row="1" data-col="3" data-sizex="1" data-sizey="2" class="gs-w">1<span class="gs-resize-handle gs-resize-handle-both"></span></li>
             <li data-row="1" data-col="4" data-sizex="1" data-sizey="1" class="gs-w">2<span class="gs-resize-handle gs-resize-handle-both"></span></li>
@@ -237,12 +237,12 @@
 
         var gridster;
         $(function () {
-            gridster = $(".gridster ul").gridster({
+            gridster = $("#ulGridster").gridster({
                 widget_base_dimensions: [55, 55],
                 widget_margins: [5, 5],
                 autogrow_cols: true,
                 autogrow_rows: true,
-                scale: function () { return scale; },
+                scale: scale,
                 resize: {
                     enabled: true
                 }
@@ -278,17 +278,23 @@
                 var top = -((height - height * newScale) * 0.5) + ctop - (y - offsetTop) * newScale / scale - tagtop;
 
                 $("#fantom").css("transform", "translate(" + (left) + "px, " + (top) + "px) scale(" + newScale + ") ");
-                $("#ulGridsterContent").css("transform", "translate(" + (left) + "px, " + (top) + "px) scale(" + newScale + ") ");
+                $("#ulGridster").css("transform", "translate(" + (left) + "px, " + (top) + "px) scale(" + newScale + ") ");
 
                 scale = newScale;
+                gridster.set_scale(scale);
             });
 
             $(".gridster").height($(window).height() - $(".gridster").offset().top - 50);
-            $(".gridster").movable();
+            $(".gridster").movable({
+                onMove: function () {
+                    gridster.cover_all();
+                }
+            });
         });
 
-        $.fn.movable = function () {
+        $.fn.movable = function (options) {
             return this.each(function () {
+                options = $.extend({}, options);
                 var $el = $(this);
                 var $ch = $el.find(">*");
                 $ch.css('left', 0);
@@ -318,6 +324,10 @@
                         $ch.addClass("move");
                         $ch.css('left', newLeft);
                         $ch.css('top', newTop);
+
+                        if (typeof options.onMove == "function") {
+                            options.onMove.call($el);
+                        }
                     }
                 }).mouseup(function (ev) {
                     dragging = false;

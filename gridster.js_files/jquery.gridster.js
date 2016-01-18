@@ -614,12 +614,15 @@
 
     fn.set_limits = function (container_width) {
         container_width || (container_width = this.$container.width());
-        this.player_max_left = (container_width - this.player_width + - this.options.offset_left);
+        this.player_max_left = (container_width - this.player_width + -this.options.offset_left);
         this.options.container_width = container_width;
 
         return this;
     };
 
+    fn.set_scale = function (scale) {
+        this.options.scale = scale;
+    };
 
     fn.scroll_in = function (axis, data) {
         var dir_prop = dir_map[axis];
@@ -1702,10 +1705,7 @@
             posChanged = true;
         }
 
-        if (this.options.avoid_overlapped_widgets &&
-            !this.can_move_to(
-             { size_x: wgd.size_x, size_y: wgd.size_y }, wgd.col, wgd.row)
-        ) {
+        if (this.options.avoid_overlapped_widgets && !this.can_move_to({ size_x: wgd.size_x, size_y: wgd.size_y }, wgd.col, wgd.row)) {
             $.extend(wgd, this.next_position(wgd.size_x, wgd.size_y));
             $el.attr({
                 'data-col': wgd.col,
@@ -1722,12 +1722,52 @@
         $el.data('coords').grid = wgd;
 
         this.add_to_gridmap(wgd, $el);
+        this.append_cover($el);
 
         this.options.resize.enabled && this.add_resize_handle($el);
 
         return posChanged;
     };
 
+    fn.append_cover = function ($el) {
+        var dataName = "last-mousedown";
+        var className = "gs-el-cover";
+        var cover = $el.find("div." + className);
+        var gridster = this;
+        if (!cover.length) {
+            cover = $("<div class='" + className + "'></div>");
+            $el.append(cover);
+            $el.data("cover", cover);
+            cover.mousedown(function (args) {
+                gridster.cover_all();
+                if (args.which == 1) {
+                    cover.data(dataName, { time: new Date().getTime(), at: { clientX: args.clientX, clientY: args.clientY } });
+                }
+            });
+            cover.mouseup(function (args) {
+                gridster.cover_all();
+                if (args.which != 1)
+                    return;
+                var data = cover.data(dataName);
+                if (!data)
+                    return;
+                var time = new Date().getTime() - data.time;
+                var pos = Math.max(Math.abs(args.clientX - data.at.clientX), Math.abs(args.clientY - data.at.clientY));
+                cover.data(dataName, null);
+                if (time > 500 || pos > 5)
+                    return;
+
+                cover.hide();
+            });
+        }
+    };
+
+    fn.cover_all = function () {
+        this.$widgets.each(function (i, el) {
+            var $w = $(el);
+            $w.find("div.gs-el-cover").show();
+        });
+    };
 
     /**
     * Update in the mapped array of positions the value of cells represented by
@@ -1820,7 +1860,6 @@
                 self.$el.trigger('gridster:drag');
             }, 60)
         });
-
         this.drag_api = this.$el.drag(draggable_options);
         return this;
     };
@@ -1886,6 +1925,8 @@
     * @param {Object} ui A prepared ui object with useful drag-related data
     */
     fn.on_start_drag = function (event, ui) {
+        this.cover_all();
+
         this.$helper.add(this.$player).add(this.$wrapper).addClass('dragging');
 
         this.highest_col = this.get_highest_occupied_cell().col;
@@ -3580,6 +3621,11 @@
         return $widgets;
     };
 
+    fn.set_scale = function (scale) {
+        this.options.scale = scale;
+        this.drag_api.set_scale(scale);
+        this.cover_all();
+    };
 
     /**
     * Set the current height of the parent grid.
