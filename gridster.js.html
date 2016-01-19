@@ -234,8 +234,8 @@
     <script type="text/javascript" charset="utf-8" src="./gridster.js_files/jquery.mousewheel.js"></script>
 
     <script type="text/javascript">
-
         var gridster;
+        var setScale = null;
         $(function () {
             gridster = $("#ulGridster").gridster({
                 widget_base_dimensions: [55, 55],
@@ -245,11 +245,28 @@
                 scale: scale,
                 resize: {
                     enabled: true
+                },
+                on_element_activated: function (args, ui) {
+                    //console.warn(this, args, ui);
+                    var div = $("#divGridster");
+                    var el = $(this);
+                    var off = gridster.$el.offset();
+                    var pos = { top: parseInt(gridster.$el.css("top")), left: parseInt(gridster.$el.css("left")) };
+
+                    var divWidth = div.width();
+                    var elWidth = el.width();
+                    var elLeft = (el.offset().left - off.left) / scale;
+                    var left = divWidth / 2 - (elLeft + elWidth / 2) - pos.left;
+                    //console.warn(pos);
+
+                    var divHeight = div.height();
+                    var elHeight = el.height();
+                    var elTop = (el.offset().top - off.top) / scale;
+                    var top = divHeight / 2 - (elTop + elHeight / 2) - pos.top;
+                    
+                    setScale(1, left, top);
                 }
             }).data('gridster');
-
-            //$(".gridster").on("mousemove", function (e, a) {
-            //});
 
             var scale = 1, zoomRate = 1.3
 
@@ -277,12 +294,16 @@
                 var left = -((width - width * newScale) * 0.5) + cleft - (x - offsetLeft) * newScale / scale - tagleft;
                 var top = -((height - height * newScale) * 0.5) + ctop - (y - offsetTop) * newScale / scale - tagtop;
 
+                setScale(newScale, left, top);
+            });
+
+            setScale = function (newScale, left, top) {
                 $("#fantom").css("transform", "translate(" + (left) + "px, " + (top) + "px) scale(" + newScale + ") ");
                 $("#ulGridster").css("transform", "translate(" + (left) + "px, " + (top) + "px) scale(" + newScale + ") ");
 
                 scale = newScale;
                 gridster.set_scale(scale);
-            });
+            };
 
             $(".gridster").height($(window).height() - $(".gridster").offset().top - 50);
             $(".gridster").movable({

@@ -1744,7 +1744,7 @@
                     cover.data(dataName, { time: new Date().getTime(), at: { clientX: args.clientX, clientY: args.clientY } });
                 }
             });
-            cover.mouseup(function (args) {
+            cover.mouseup(function (args, ui) {
                 gridster.cover_all();
                 if (args.which != 1)
                     return;
@@ -1756,6 +1756,10 @@
                 cover.data(dataName, null);
                 if (time > 500 || pos > 5)
                     return;
+
+                if (gridster.options.on_element_activated) {
+                    gridster.options.on_element_activated.call($el, args, ui);
+                }
 
                 cover.hide();
             });
