@@ -682,7 +682,7 @@
     fn.drag_handler = function (e) {
         var node = e.target.nodeName;
         // skip if drag is disabled, or click was not done with the mouse primary button
-        if (this.disabled || e.which !== 1 && !isTouch) {
+        if (this.disabled || e.which !== 1 /*&& !isTouch*/) {
             return;
         }
 
