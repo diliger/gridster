@@ -11,41 +11,48 @@
 
 
 </head>
-<body>
+<!--body style="overflow: hidden;"-->
+<body style="overflow: hidden;">
     <h1>Dynamic grid width</h1>
 
     <div id="divInfo1" style="font-size: small; font-weight: normal; color: #9DA4FF;">Cursor info:</div>
 
-    <div id="divGridster" class="gridster ready" style="background-color: #EFEFEF;">
-        <div id="fantom" style="position: absolute; height: 100%; width: 100%; background-color: transparent; transition: transform 0.0s; transform: scale(1) translate(0px, 0px); "></div>
-        <ul id="ulGridster" style="height: 100%; width: 100%; background-color: transparent; transition: transform 0.6s cubic-bezier(0.2, 0.6, 0.3, 1.0); transform: scale(1) translate(0px, 0px); ">
-            <li data-row="1" data-col="1" data-sizex="12" data-sizey="12" class="gs-w">0<span class="gs-resize-handle gs-resize-handle-both"></span></li>
+	<div id="divGridster" class="gridster ready" style="background-color: #EFEFEF; /*overflow: scroll;*/">
+        <div id="fantom" style="height: 100%; width: 100%; position: absolute; background-color: transparent; transition: left 0.0s, top 0.0s, transform 0.0s; transform: scale(1) translate(0px, 0px) left(0px) top(0px); "></div>
+        <ul  id="divorg" style="height: 100%; width: 100%; position: absolute; background-color: transparent; transition: left 0.6s cubic-bezier(0.2, 0.6, 0.3, 1), top 0.6s cubic-bezier(0.2, 0.6, 0.3, 1), transform 0.6s cubic-bezier(0.2, 0.6, 0.3, 1.0); transform: scale(1) translate(0px, 0px) left(0px) top(0px); ">
             
-			<li data-row="1" data-col="63" data-sizex="88" data-sizey="65" class="gs-w">
-				<embed src="pdfviewer.js_files/web/viewer.html?file=../../files/3d.pdf" width="99%" height="99%"/>
-				<span class="gs-resize-handle gs-resize-handle-both"></span>
-			</li>
+            <li data-row="1" data-col="1" data-sizex="3" data-sizey="13" class="gs-w">Params<span class="gs-resize-handle gs-resize-handle-both"></span></li>
+            
+            <li data-row="13" data-col="4" data-sizex="17" data-sizey="12" class="gs-w">
+                <div style="display: table-cell; vertical-align: middle;">
+                    <img alt="" src="files/3d.png" />
+                </div>
+                <span class="gs-resize-handle gs-resize-handle-both"></span>
+            </li>
+
+            <li data-row="25" data-col="17" data-sizex="8" data-sizey="10" class="gs-w" style="display: table-cell; vertical-align: middle;">
+                <div style="display: table-cell; vertical-align: middle;">
+                    <img alt="" src="files/repn1.png" />
+                </div>
+                <span class="gs-resize-handle gs-resize-handle-both"></span>
+            </li>
+
+            <li data-row="1" data-col="4" data-sizex="24" data-sizey="12" class="gs-w" style="display: table-cell; vertical-align: middle;">
+                <div style="display: table-cell; vertical-align: middle;">
+                    <img alt="" src="files/fond.png" />
+                </div>
+                <span class="gs-resize-handle gs-resize-handle-both"></span>
+            </li>
+
+            <li data-row="1" data-col="29" data-sizex="15" data-sizey="44" class="gs-w" style="display: table-cell; vertical-align: middle;">
+                <div style="display: table-cell; vertical-align: middle;">
+                    <img alt="" src="files/shahmat.png" />
+                </div>
+                <span class="gs-resize-handle gs-resize-handle-both"></span>
+            </li>
 			
-            <li data-row="21" data-col="13" data-sizex="50" data-sizey="63" class="gs-w">
-				<embed src="pdfviewer.js_files/web/viewer.html?file=../../files/compressed.tracemonkey-pldi-09.pdf" width="99%" height="99%"/>
-				<span class="gs-resize-handle gs-resize-handle-both"></span>
-			</li>
 			
-            <!--li data-row="1" data-col="1" data-sizex="3" data-sizey="1" class="gs-w player-revert" style="position: absolute;">3<span class="gs-resize-handle gs-resize-handle-both"></span></li>
-            <li data-row="4" data-col="1" data-sizex="1" data-sizey="1" class="gs-w">4<span class="gs-resize-handle gs-resize-handle-both"></span></li>
-            <li data-row="3" data-col="1" data-sizex="1" data-sizey="1" class="gs-w">5<span class="gs-resize-handle gs-resize-handle-both"></span></li>
-            <li data-row="3" data-col="2" data-sizex="1" data-sizey="1" class="gs-w">6<span class="gs-resize-handle gs-resize-handle-both"></span></li>
-            <li data-row="4" data-col="2" data-sizex="1" data-sizey="1" class="gs-w">7<span class="gs-resize-handle gs-resize-handle-both"></span></li>
-            <li data-row="2" data-col="4" data-sizex="1" data-sizey="1" class="gs-w">8<span class="gs-resize-handle gs-resize-handle-both"></span></li-->
-			
-            <li data-row="21" data-col="13" data-sizex="55" data-sizey="71" class="gs-w">
-				<img alt="Image1" src="files/repn1.png" width="816px" height="1053px" />
-				<!--p src="files/repn1.png" type="image/png" width="99%" height="99%"/-->
-				<span class="gs-resize-handle gs-resize-handle-both"></span>
-			</li>
-			
-			
-            <li data-row="1" data-col="8" data-sizex="50" data-sizey="46" class="gs-w">
+            <li data-row="25" data-col="4" data-sizex="13" data-sizey="5" class="gs-w" style="display: block;">
                 <div class="content1" style="width: 99%;height: 99%; margin-left:5px; margin-top:20px;">
                     <div id="example_wrapper" class="dataTables_wrapper">
                         <div class="dataTables_length" id="example_length"><label>Show <select name="example_length" aria-controls="example" class=""><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div><div id="example_filter" class="dataTables_filter"><label>Search:<input type="search" class="" placeholder="" aria-controls="example"></label></div><table id="example" class="display dataTable" cellspacing="0" width="100%" role="grid" aria-describedby="example_info" style="width: 100%;">
@@ -139,11 +146,10 @@
                             </tbody>
                         </table><div class="dataTables_info" id="example_info" role="status" aria-live="polite">Showing 41 to 50 of 57 entries</div><div class="dataTables_paginate paging_simple_numbers" id="example_paginate"><a class="paginate_button previous" aria-controls="example" data-dt-idx="0" tabindex="0" id="example_previous">Previous</a><span><a class="paginate_button " aria-controls="example" data-dt-idx="1" tabindex="0">1</a><a class="paginate_button " aria-controls="example" data-dt-idx="2" tabindex="0">2</a><a class="paginate_button " aria-controls="example" data-dt-idx="3" tabindex="0">3</a><a class="paginate_button " aria-controls="example" data-dt-idx="4" tabindex="0">4</a><a class="paginate_button current" aria-controls="example" data-dt-idx="5" tabindex="0">5</a><a class="paginate_button " aria-controls="example" data-dt-idx="6" tabindex="0">6</a></span><a class="paginate_button next" aria-controls="example" data-dt-idx="7" tabindex="0" id="example_next">Next</a></div>
                     </div>
-
                 </div>
                 <span class="gs-resize-handle gs-resize-handle-both"></span>
             </li>
-            <li data-row="2" data-col="8" data-sizex="50" data-sizey="46" class="gs-w" style="display: visible;">
+            <li data-row="30" data-col="4" data-sizex="13" data-sizey="5" class="gs-w" style="display: block;">
                 <div class="content1" style="width: 99%;height: 99%; margin-left:5px; margin-top:20px;">
                     <div id="example_wrapper" class="dataTables_wrapper">
                         <div class="dataTables_length" id="example_length"><label>Show <select name="example_length" aria-controls="example" class=""><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div><div id="example_filter" class="dataTables_filter"><label>Search:<input type="search" class="" placeholder="" aria-controls="example"></label></div><table id="example" class="display dataTable" cellspacing="0" width="100%" role="grid" aria-describedby="example_info" style="width: 100%;">
@@ -237,16 +243,14 @@
                             </tbody>
                         </table><div class="dataTables_info" id="example_info" role="status" aria-live="polite">Showing 41 to 50 of 57 entries</div><div class="dataTables_paginate paging_simple_numbers" id="example_paginate"><a class="paginate_button previous" aria-controls="example" data-dt-idx="0" tabindex="0" id="example_previous">Previous</a><span><a class="paginate_button " aria-controls="example" data-dt-idx="1" tabindex="0">1</a><a class="paginate_button " aria-controls="example" data-dt-idx="2" tabindex="0">2</a><a class="paginate_button " aria-controls="example" data-dt-idx="3" tabindex="0">3</a><a class="paginate_button " aria-controls="example" data-dt-idx="4" tabindex="0">4</a><a class="paginate_button current" aria-controls="example" data-dt-idx="5" tabindex="0">5</a><a class="paginate_button " aria-controls="example" data-dt-idx="6" tabindex="0">6</a></span><a class="paginate_button next" aria-controls="example" data-dt-idx="7" tabindex="0" id="example_next">Next</a></div>
                     </div>
-
                 </div>
                 <span class="gs-resize-handle gs-resize-handle-both"></span>
             </li>
 			
-			<li data-row="100" data-col="400" data-sizex="1" data-sizey="1" class="gs-w">8<span class="gs-resize-handle gs-resize-handle-both"></span></li>
+            <li data-row="1" data-col="46" data-sizex="1" data-sizey="1" class="gs-w">8<span class="gs-resize-handle gs-resize-handle-both"></span></li>
 			
         </ul>
-    </div>
-
+	</div>
 
 
     <script type="text/javascript" charset="utf-8" src="./gridster.js_files/jquery.js"></script>
@@ -254,17 +258,24 @@
     <script type="text/javascript" charset="utf-8" src="./gridster.js_files/jquery.mousewheel.js"></script>
 
     <script type="text/javascript">
+        var appParams = { isZoomMousewheeled: true, isZoomInverted: false };
+        
         var gridster;
         var setScale = null;
         $(function () {
-            gridster = $("#ulGridster").gridster({
-                widget_base_dimensions: [5, 5],
+            gridster = $("#divorg").gridster({
+                widget_base_dimensions: [100, 100],
                 widget_margins: [5, 5],
                 autogrow_cols: true,
                 autogrow_rows: true,
                 scale: scale,
                 resize: {
-                    enabled: true
+                    enabled: true,
+                    stop: function (e, ui, $widget) {
+                        var el = $widget.children().first();
+                        el.css("height", this.resize_coords.data.height + "px");
+                        el.css("width", this.resize_coords.data.width + "px");
+                    }
                 },
                 on_element_activated: function (args, ui) {
                     //console.warn(this, args, ui);
@@ -282,19 +293,29 @@
                     var divHeight = div.height();
                     var elHeight = el.height();
                     var elTop = (el.offset().top - off.top) / scale;
+                    //var top = divHeight / 2 - (elTop + elHeight / 2) - pos.top;
                     var top = divHeight / 2 - (elTop + elHeight / 2) - pos.top + (elHeight > divHeight ? elHeight - divHeight : 0) / 2;
                     
                     setScale(1, left, top);
                 }
             }).data('gridster');
 
-            var scale = 1, zoomRate = 1.3
+            var scale = 1, zoomRate = 1.2
 
             $(".gridster").on("mousewheel", function (e, a) {
 
                 var delta = e.deltaY + e.deltaX;
                 var rate = zoomRate * Math.abs(delta);
-                var newScale = delta > 0 ? scale / rate : scale * rate;
+
+                var newScale, fbScale = 1;
+
+                if (appParams.isZoomMousewheeled) {
+                    if (appParams.isZoomInverted) {
+                        newScale = delta > 0 ? scale / rate : scale * rate;
+					} else {
+                        newScale = delta > 0 ? scale * rate : scale / rate;
+					}
+                }
 
                 var el = $("#fantom");
                 var offset = el.offset();
@@ -319,7 +340,7 @@
 
             setScale = function (newScale, left, top) {
                 $("#fantom").css("transform", "translate(" + (left) + "px, " + (top) + "px) scale(" + newScale + ") ");
-                $("#ulGridster").css("transform", "translate(" + (left) + "px, " + (top) + "px) scale(" + newScale + ") ");
+                $("#divorg").css("transform", "translate(" + (left) + "px, " + (top) + "px) scale(" + newScale + ") ");
 
                 scale = newScale;
                 gridster.set_scale(scale);
@@ -381,6 +402,11 @@
             $(".gridster").height($(window).height() - $(".gridster").offset().top - 50);
         });
 
+		// это для будующих scrollbar'ов
+		$('#divGridster').bind('mousewheel', function() {
+			return false;
+		});
+		
     </script>
 </body>
 </html>

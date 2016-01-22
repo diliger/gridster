@@ -456,7 +456,8 @@
 
     var $window = $(window);
     var dir_map = { x: 'left', y: 'top' };
-    var isTouch = !!('ontouchstart' in window);
+    //var isTouch = !!('ontouchstart' in window);
+	var isTouch = false;
 
     var capitalize = function (str) {
         return str.charAt(0).toUpperCase() + str.slice(1);
@@ -530,9 +531,9 @@
 
     fn.events = function () {
         this.pointer_events = {
-            start: this.nsEvent('touchstart') + ' ' + this.nsEvent('mousedown'),
-            move: this.nsEvent('touchmove') + ' ' + this.nsEvent('mousemove'),
-            end: this.nsEvent('touchend') + ' ' + this.nsEvent('mouseup'),
+            start: /*this.nsEvent('touchstart') + ' ' + */this.nsEvent('mousedown'),
+            move: /*this.nsEvent('touchmove') + ' ' + */this.nsEvent('mousemove'),
+            end: /*this.nsEvent('touchend') + ' ' + */this.nsEvent('mouseup'),
         };
 
         this.$container.on(this.nsEvent('selectstart'),
@@ -558,10 +559,10 @@
 
 
     fn.get_mouse_pos = function (e) {
-        if (e.originalEvent && e.originalEvent.touches) {
+        /*if (e.originalEvent && e.originalEvent.touches) {
             var oe = e.originalEvent;
             e = oe.touches.length ? oe.touches[0] : oe.changedTouches[0];
-        }
+        }*/
 
         return {
             left: e.clientX,
