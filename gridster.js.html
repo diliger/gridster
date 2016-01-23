@@ -18,8 +18,8 @@
     <div id="divInfo1" style="font-size: small; font-weight: normal; color: #9DA4FF;">Cursor info:</div>
 
 	<div id="divGridster" class="gridster ready" style="background-color: #EFEFEF; /*overflow: scroll;*/">
-        <div id="fantom" style="height: 100%; width: 100%; position: absolute; background-color: transparent; transition: left 0.0s, top 0.0s, transform 0.0s; transform: scale(1) translate(0px, 0px) left(0px) top(0px); "></div>
-        <ul  id="divorg" style="height: 100%; width: 100%; position: absolute; background-color: transparent; transition: left 0.6s cubic-bezier(0.2, 0.6, 0.3, 1), top 0.6s cubic-bezier(0.2, 0.6, 0.3, 1), transform 0.6s cubic-bezier(0.2, 0.6, 0.3, 1.0); transform: scale(1) translate(0px, 0px) left(0px) top(0px); ">
+        <div id="fantom" style=" position: absolute; background-color: transparent; transition: left 0.0s, top 0.0s, transform 0.0s; transform: scale(1) translate(0px, 0px) left(0px) top(0px); "></div>
+        <ul  id="divorg" style=" position: absolute; background-color: transparent; transition: left 0.6s cubic-bezier(0.2, 0.6, 0.3, 1), top 0.6s cubic-bezier(0.2, 0.6, 0.3, 1), transform 0.6s cubic-bezier(0.2, 0.6, 0.3, 1.0); transform: scale(1) translate(0px, 0px) left(0px) top(0px); ">
             
             <li data-row="1" data-col="1" data-sizex="3" data-sizey="13" class="gs-w">Params<span class="gs-resize-handle gs-resize-handle-both"></span></li>
             
@@ -49,8 +49,7 @@
                     <img alt="" src="files/shahmat.png" />
                 </div>
                 <span class="gs-resize-handle gs-resize-handle-both"></span>
-            </li>
-			
+            </li>		
 			
             <li data-row="25" data-col="4" data-sizex="13" data-sizey="5" class="gs-w" style="display: block;">
                 <div class="content1" style="width: 99%;height: 99%; margin-left:5px; margin-top:20px;">
@@ -258,11 +257,14 @@
     <script type="text/javascript" charset="utf-8" src="./gridster.js_files/jquery.mousewheel.js"></script>
 
     <script type="text/javascript">
+        var KEYCODE_ESC = 27;
         var appParams = { isZoomMousewheeled: true, isZoomInverted: false };
         
         var gridster;
+        var container;
         var setScale = null;
         $(function () {
+            container = $("#divGridster");
             gridster = $("#divorg").gridster({
                 widget_base_dimensions: [100, 100],
                 widget_margins: [5, 5],
@@ -279,7 +281,7 @@
                 },
                 on_element_activated: function (args, ui) {
                     //console.warn(this, args, ui);
-                    var div = $("#divGridster");
+                    var div = container;
                     var el = $(this);
                     var off = gridster.$el.offset();
                     var pos = { top: parseInt(gridster.$el.css("top")), left: parseInt(gridster.$el.css("left")) };
@@ -325,12 +327,12 @@
                 var height = el.height();
                 var x = e.clientX;
                 var y = e.clientY;
-
+                
                 var tagleft = parseFloat($("#fantom").css("left"));
                 var tagtop = parseFloat($("#fantom").css("top"));
 
-                var cleft = offsetLeft - $("#divGridster").offset().left + (x - offsetLeft) - 1;
-                var ctop = offsetTop - $("#divGridster").offset().top + (y - offsetTop) - 1;
+                var cleft = offsetLeft - container.offset().left + (x - offsetLeft) - 1;
+                var ctop = offsetTop - container.offset().top + (y - offsetTop) - 1;
 
                 var left = -((width - width * newScale) * 0.5) + cleft - (x - offsetLeft) * newScale / scale - tagleft;
                 var top = -((height - height * newScale) * 0.5) + ctop - (y - offsetTop) * newScale / scale - tagtop;
@@ -339,18 +341,63 @@
             });
 
             setScale = function (newScale, left, top) {
-                $("#fantom").css("transform", "translate(" + (left) + "px, " + (top) + "px) scale(" + newScale + ") ");
-                $("#divorg").css("transform", "translate(" + (left) + "px, " + (top) + "px) scale(" + newScale + ") ");
+                container.find(">*").css("transform", "translate(" + (left) + "px, " + (top) + "px) scale(" + newScale + ") ");
+                //$("#divorg").css("transform", "translate(" + (left) + "px, " + (top) + "px) scale(" + newScale + ") ");
 
                 scale = newScale;
                 gridster.set_scale(scale);
             };
 
-            $(".gridster").height($(window).height() - $(".gridster").offset().top - 50);
-            $(".gridster").movable({
+            setState = function (state) {
+                var pos = { top: parseInt(gridster.$el.css("top")), left: parseInt(gridster.$el.css("left")) };
+                if (state == 1) {
+                    var left = (container.width() - gridster.container_width) / 2;
+                    var top = (container.height() - gridster.container_height) / 2;
+                    var widthRate = 1, heightRate = 1;
+                    if (left < 0) {
+                        widthRate = container.width() / gridster.container_width;
+                    }
+                    if (top < 0) {
+                        heightRate = container.height() / gridster.container_height;
+                    }
+                    var scale = Math.min(widthRate, heightRate);
+                    left = (container.width() - gridster.container_width * scale) / 2 - pos.left;
+                    top = (container.height() - gridster.container_height * scale) / 2 - pos.top;
+                    gridster.cover_all();
+                    setScale(scale, left, top);
+                }
+            };
+
+            container.height($(window).height() - container.offset().top - 50);
+            container.movable({
                 onMove: function () {
                     gridster.cover_all();
                 }
+            });
+
+            container.mousedown(function (args) {
+                if (args.which == 3) {
+                    container.data("last-mousedown", { time: new Date().getTime(), at: { clientX: args.clientX, clientY: args.clientY } });
+                }
+            });
+            container.mouseup(function (args, ui) {
+                if (args.which != 3)
+                    return;
+                var data = container.data("last-mousedown");
+                if (!data)
+                    return;
+                var time = new Date().getTime() - data.time;
+                var pos = Math.max(Math.abs(args.clientX - data.at.clientX), Math.abs(args.clientY - data.at.clientY));
+                container.data("last-mousedown", null);
+                if (time > 250 || pos > 3)
+                    return;
+
+                setState(1);
+            });
+            //14:30 - 17:00
+            // это для будующих scrollbar'ов
+            container.bind('mousewheel', function () {
+                return false;
             });
         });
 
@@ -399,14 +446,13 @@
         }
 
         $(window).resize(function () {
-            $(".gridster").height($(window).height() - $(".gridster").offset().top - 50);
+            container.height($(window).height() - container.offset().top - 50);
         });
-
-		// это для будующих scrollbar'ов
-		$('#divGridster').bind('mousewheel', function() {
-			return false;
-		});
-		
+        $(document).keyup(function (e) {
+            if (e.which == KEYCODE_ESC) {
+                setState(1);
+            }
+        });
     </script>
 </body>
 </html>
