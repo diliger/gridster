@@ -288,15 +288,12 @@
                     }
                 },
                 on_widget_click: function (args, ui) {
-                    //console.warn(this, args, ui);
                     var el = $(this);
                     var time = new Date().getTime();
                     var state = el.data("state");
                     var last = el.data("last-click") * 1;
                     if (state == 2 || time - last < 200) {
                         setState(3, el, args);
-                        console.warn(time - last);
-
                     }
                     else
                         setState(2, el, args);
@@ -356,15 +353,16 @@
             };
 
             setState = function (state, el, args, run) {
-                var wait = state == 2 ? 200 : 25;
+                var wait = 200;
                 if (!run || setScale.busy) {
                     clearTimeout(setState.timeout);
                     setState.timeout = setTimeout(function () {
                         setState(state, el, args, true);
+                        setState.timeout = null;
                     }, wait);
                     return;
                 }
-                console.warn(state, setState.timeout);
+
                 var pos = { top: parseInt(gridster.$el.css("top")), left: parseInt(gridster.$el.css("left")) };
                 var scale = gridster.options.scale, left, top, applyScale = true;
                 if (state == 1) {
@@ -464,7 +462,8 @@
                 else if (gridster.state == 3)
                     setState(2, gridster.active_widget, args);
             });
-            //14:30 - 17:00
+            //14:30 - 17:00 2016-01-23
+            //07:00 - 11:00 2016-01-24
             // это для будующих scrollbar'ов
             container.bind('mousewheel', function () {
                 return false;
