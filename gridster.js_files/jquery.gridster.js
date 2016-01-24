@@ -457,7 +457,7 @@
     var $window = $(window);
     var dir_map = { x: 'left', y: 'top' };
     //var isTouch = !!('ontouchstart' in window);
-	var isTouch = false;
+    var isTouch = false;
 
     var capitalize = function (str) {
         return str.charAt(0).toUpperCase() + str.slice(1);
@@ -991,6 +991,7 @@
         this.$style_tags = $([]);
 
         this.options.auto_init && this.init();
+        this.options.scale = options.scale || 1;
     }
 
     Gridster.defaults = defaults;
@@ -1758,20 +1759,25 @@
                 if (time > 500 || pos > 5)
                     return;
 
-                if (gridster.options.on_element_activated) {
-                    gridster.options.on_element_activated.call($el, args, ui);
+                if (gridster.options.on_widget_click) {
+                    gridster.options.on_widget_click.call($el, args, ui);
                 }
-
-                cover.hide();
             });
         }
     };
 
     fn.cover_all = function () {
+        var state = "";
+        if (this.active_widget)
+            state = this.active_widget.data("state");
         this.$widgets.each(function (i, el) {
             var $w = $(el);
             $w.find("div.gs-el-cover").show();
+            $w.data("state", "");
         });
+
+        if (state)
+            this.active_widget.data("state", state);
     };
 
     /**
